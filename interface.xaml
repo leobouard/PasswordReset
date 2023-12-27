@@ -1,0 +1,108 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Name="window" Title="Reset password" MinHeight="395" MaxHeight="690" Height="395" MinWidth="350" MaxWidth="500" Width="400">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+
+        <!-- Search user -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="$DarkColor" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="-15"/>
+            <Label Content="Reset user password" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+            <ComboBox Name="comboboxSearch" Margin="5" Grid.Row="1"/>
+            <TextBox Name="textboxSearch" VerticalContentAlignment="center" Margin="5,5,0,5" Grid.Row="1"/>
+            <Button Name="buttonClear" ToolTip="Clear your search" Height="25" Width="25" BorderThickness="0" Background="Transparent" HorizontalAlignment="Right" Grid.Row="1">
+                <Path Fill="$SecondaryColor" Stretch="Uniform" Margin="5" Data="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+            </Button>
+            <Button Name="buttonSearch" ToolTip="Search user in Active Directory" Margin="5" Background="$PrimaryColor" BorderThickness="0" Foreground="White" Grid.Row="1" Grid.Column="1">
+                <Path Fill="White" Stretch="Uniform" Margin="3" Data="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+            </Button>
+        </Grid>
+
+        <!-- Passwords -->
+        <Grid Grid.Row="2">
+            <GroupBox Header="Auto-generated password">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="75"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Slider Name="slider" TickFrequency="2" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Minimum="8" Maximum="24" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+                    <Border Background="$AccentBGColor" CornerRadius="2" Margin="0,5,0,5" BorderBrush="$SecondaryColor" Grid.Row="1" Grid.ColumnSpan="2"/>
+                    <Label Name="labelPwdPreview" FontFamily="Consolas" Foreground="$DarkColor" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Content="" Grid.Row="1" Grid.Column="0"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="1">
+                        <Button Name="buttonRegen" ToolTip="Generate a new password" Height="25" Width="25" BorderThickness="0" Background="Transparent">
+                            <Path Fill="$DarkColor" Stretch="Uniform" Margin="3" Data="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160H352c-17.7 0-32 14.3-32 32s14.3 32 32 32H463.5c0 0 0 0 0 0h.4c17.7 0 32-14.3 32-32V80c0-17.7-14.3-32-32-32s-32 14.3-32 32v35.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1V432c0 17.7 14.3 32 32 32s32-14.3 32-32V396.9l17.6 17.5 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352H160c17.7 0 32-14.3 32-32s-14.3-32-32-32H48.4c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z"/>
+                        </Button>
+                        <Button Name="buttonClipboard" ToolTip="Copy to clipboard" Height="25" Width="25" BorderThickness="0" Background="Transparent" Margin="5">
+                            <Path Fill="$DarkColor" Stretch="Uniform" Margin="3" Data="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <!-- Options and details about password -->
+        <Expander Name="expander" Grid.Row="3" Background="$AccentBGColor" Margin="0,15,0,15" BorderBrush="$SecondaryColor" BorderThickness="1" Padding="5">
+            <Expander.Header>Show more options and information</Expander.Header>
+            <StackPanel>
+                <Label FontSize="13" FontWeight="Bold" Content="Account options"/>
+                <CheckBox Name="checkboxUnlock" Content="Unlock the account" Margin="5"/>
+                <CheckBox Name="checkboxEnable" Content="Enable the account" Margin="5"/>
+                <CheckBox Name="checkboxChangePwd" Content="Must change password at next logon" Margin="5"/>
+                <Label FontSize="13" FontWeight="Bold" Content="Password information"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Password last set"/>
+                    <Label Name="passwordLastSet" Grid.Column="1"/>
+                    <Label Content="Last bad password attempt" Grid.Row="1"/>
+                    <Label Name="lastBadPasswordAttempt" Grid.Row="1" Grid.Column="1"/>
+                    <Label Content="Password lifetime" Grid.Row="2"/>
+                    <ProgressBar Name="passwordLifetime" Minimum="0" Maximum="100" Value="0" Foreground="$PrimaryColor" Margin="5" Grid.Row="2" Grid.Column="1"/>
+                    <Label Content="Password expired" Grid.Row="3"/>
+                    <Label Name="passwordExpired" Grid.Row="3" Grid.Column="1"/>
+                    <Label Content="Password never expires" Grid.Row="4"/>
+                    <Label Name="passwordNeverExpires" Grid.Row="4" Grid.Column="1"/>
+                    <Label Content="Password policy applied" Grid.Row="5"/>
+                    <Label Name="passwordPolicy" Grid.Row="5" Grid.Column="1"/>
+                </Grid>
+            </StackPanel>
+        </Expander>
+
+        <!-- Buttons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="4">
+            <Button Name="buttonCancel" BorderBrush="$PrimaryColor" Foreground="$PrimaryColor" Background="White" Content="Cancel" Width="100" Margin="5"/>
+            <Button Name="buttonReset" BorderThickness="0" Background="$PrimaryColor" Foreground="White" Content="Reset" Width="100" Margin="5"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
