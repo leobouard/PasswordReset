@@ -25,6 +25,8 @@ The script will automatically adapt to your Default Domain password policy and F
 
 For example, if your password policy is set to 12 characters minimum, the minimum value will be 12 and the maximum value will be 28 (12+16).
 
+**Reminder**: Authenticated Users do not have access to fine-grained password policies by default. [How to display fine-grained password policy settings to Authenticated Users? - Synergix Support](https://synergixdesk.zendesk.com/hc/en-us/articles/202927708-How-to-display-fine-grained-password-policy-settings-to-Authenticated-Users-).
+
 ## About colors
 
 Colors can be customized using the script parameters:
