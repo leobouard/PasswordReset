@@ -44,3 +44,5 @@ AccentBGColor | #F2F2F2 | Black
 ## Other mentions
 
 SVG icons comes from <https://fontawesome.com>.
+
+Thank you [@Krysten LE LUEL](https://www.linkedin.com/in/krysten-le-luel-2348a9220/) for testing and proof-reading.
