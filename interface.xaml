@@ -45,7 +45,7 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Slider Name="slider" TickFrequency="2" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Minimum="8" Maximum="24" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+                    <Slider Name="slider" TickFrequency="2" TickPlacement="BottomRight" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Minimum="10" Maximum="24" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
                     <Border Background="$AccentBGColor" CornerRadius="2" Margin="0,5,0,5" BorderBrush="$SecondaryColor" Grid.Row="1" Grid.ColumnSpan="2"/>
                     <Label Name="labelPwdPreview" FontFamily="Consolas" Foreground="$DarkColor" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Content="" Grid.Row="1" Grid.Column="0"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="1">
