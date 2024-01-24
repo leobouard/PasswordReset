@@ -47,4 +47,7 @@ AccentBGColor | #F2F2F2 | Black
 
 SVG icons comes from <https://fontawesome.com>.
 
-Thank you [@Krysten LE LUEL](https://www.linkedin.com/in/krysten-le-luel-2348a9220/) for testing and proof-reading.
+Thank you to:
+
+- [@Krysten LE LUEL](https://www.linkedin.com/in/krysten-le-luel-2348a9220/) for testing and proof-reading
+- [@Glen REBILLARD](https://www.linkedin.com/in/glen-rebillard-ab89a854/) for the tip to stop depending on WinForm for message boxes.
