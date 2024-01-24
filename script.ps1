@@ -13,7 +13,7 @@ $PSDefaultParameterValues['*:Encoding'] = 'UTF8'
 Import-Module $PSScriptRoot\module.psm1
 
 try { 
-    Add-Type -AssemblyName PresentationCore,PresentationFramework,WindowsBase,System.Windows.Forms
+    Add-Type -AssemblyName PresentationCore,PresentationFramework,WindowsBase
 } catch { 
     Write-Error "Failed to load Windows Presentation Framework assemblies"
 }
@@ -55,7 +55,7 @@ $buttonReset.Add_Click({
             Set-ADAccountPassword $Global:User -Reset -NewPassword (ConvertTo-SecureString -AsPlainText $password -Force)
         } catch { 
             $errorMessage = $_.Exception.Message
-            [System.Windows.Forms.MessageBox]::Show($errorMessage, "Can't change the password", 1, 16)
+            [void][System.Windows.MessageBox]::Show($errorMessage, "Can't change the password", 1, 16)
         }
 
         if ($checkboxEnable.IsChecked -eq $true -and $checkboxEnable.IsEnabled -eq $true) { Set-ADUser $Global:User -Enabled $true }
@@ -63,7 +63,7 @@ $buttonReset.Add_Click({
         if ($checkboxChangePwd.IsChecked -eq $true) { Set-ADUser $Global:User -ChangePasswordAtLogon $true }
 
         if ($null -eq $errorMessage) {
-            [System.Windows.Forms.MessageBox]::Show("The new password has been copied to your clipboard: $password", "Password reset", 1, 64)
+            [void][System.Windows.MessageBox]::Show("The new password has been copied to your clipboard: $password", "Password reset", 1, 64)
             $password | Set-Clipboard
         }
 
