@@ -21,7 +21,7 @@ The list of special characters used is as follows: `! # $ % & * + - . / = ? @ _`
 
 ### Password policies
 
-The script will automatically adapt to your Default Domain password policy and Fine-grained password policies. However, The minimum value of the slider for password length cannot be lower than 8, even if your password policy allows it. The maximum length available for password generation will be: minimum length + 16 characters.
+The script will automatically adapt to your Default Domain password policy and Fine-grained password policies. However, The minimum value of the slider for password length cannot be lower than 10, even if your password policy allows it. The maximum length available for password generation will be: minimum length + 16 characters.
 
 For example, if your password policy is set to 12 characters minimum, the minimum value will be 12 and the maximum value will be 28 (12+16).
 
