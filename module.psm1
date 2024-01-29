@@ -20,8 +20,11 @@ function Update-UI {
     $textboxSearch.Text = $Global:User.DisplayName
     $textboxSearch.ToolTip = $Global:User.CanonicalName
 
-    if ($User.LockedOut -eq $false) { $checkboxUnlock.IsEnabled = $false ; $checkboxUnlock.IsChecked = $false }
-    if ($User.Enabled -eq $true) { $checkboxEnable.IsEnabled = $false ; $checkboxEnable.IsChecked = $false }
+    if ($User.LockedOut -eq $false) { $checkboxUnlock.IsEnabled = $false } else { $checkboxUnlock.IsEnabled = $true }
+    if ($User.Enabled -eq $true) { $checkboxEnable.IsEnabled = $false } else { $checkboxEnable.IsEnabled = $true }
+
+    $checkboxUnlock.IsChecked = $false
+    $checkboxEnable.IsChecked = $false
     $checkboxChangePwd.IsChecked = $false
 
     $userPasswordPolicy = Get-ADUserResultantPasswordPolicy -Identity $user
