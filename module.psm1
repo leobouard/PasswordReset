@@ -104,6 +104,28 @@ function Clear-UI {
     $null = $xamGUI.LayoutTransform
 }
 
+function _SecureRand {
+    param (
+        [string[]]$Chars,
+        [int]$Count = 1
+    )
+    if (Get-Command "Get-SecureRandom" -errorAction SilentlyContinue) { 
+        # PS >= 7.4
+        return $Chars | Get-SecureRandom -Count $Count
+    } else {
+        $res = ""
+        $cryptGen = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+        $memory = [byte[]]@(0) * $Count;
+        $cryptGen.GetBytes($memory)
+        $cryptGen.Dispose()
+        
+        For($i=0;$i -lt $Count;$i++) {
+            $randIndex = [int] ($memory[$i] % $chars.Length);
+            $res += [char]$chars[$randIndex]
+        }
+        return $res
+    }
+}
 function New-Password {
     param([int]$Length = 8)
 
@@ -115,9 +137,9 @@ function New-Password {
     $spe = '!','#','$','%','&','*','+','-','.','/','=','?','@','_'
     $all = $low+$upp+$num+$spe
 
-    'low','upp','num','spe' | ForEach-Object { Invoke-Expression -Command "`$password += `$$_ | Get-Random" }
-    while ($password.Length -lt $Length) { $password += $all | Get-Random }
-    $password = ($password.ToCharArray() | Get-Random -Count $Length) -join ''
+    'low','upp','num','spe' | ForEach-Object { Invoke-Expression -Command "`$password += _SecureRand -Chars @(`$$_) -Count 1" }
+    while ($password.Length -lt $Length) { $password += _SecureRand -Chars $all -Count 1 }
+    $password = (_SecureRand -Chars $password.ToCharArray() -Count $Length) -join ''
 
     return $password
 }
