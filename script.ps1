@@ -1,16 +1,19 @@
 ﻿param(
     [switch]$ShowConsole,
-    [string]$PrimaryColor,
+    [switch]$UseSecureRandom,
+    [string]$DateFormat = 'g',
+    [string]$PrimaryColor = '#0150C6',
     [string]$SecondaryColor = '#D5DFE5',
     [string]$DarkColor = '#2D3142',
     [string]$AccentBGColor = '#F2F2F2'
 )
 
-if (!$PrimaryColor) { $PrimaryColor = ('#0150C6','#3F7854','#DD1155','#1D75AF','#EA1F4B','#864677','#1A7467','#FA0F7D','#C1420B' | Get-Random) }
-
 $PSDefaultParameterValues['*:Encoding'] = 'UTF8'
 
 Import-Module $PSScriptRoot\module.psm1
+
+$Global:UseSecureRandom = $UseSecureRandom
+$Global:DateFormat = $DateFormat
 
 try { 
     Add-Type -AssemblyName PresentationCore,PresentationFramework,WindowsBase

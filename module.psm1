@@ -31,7 +31,7 @@ function Update-UI {
     if (!$userPasswordPolicy) { $userPasswordPolicy = Get-ADDefaultDomainPasswordPolicy }
 
     if ($user.PasswordLastSet) {
-        $passwordLastSet.Content = "$(Get-Date $user.PasswordLastSet -Format 'yyyy-MM-dd HH:mm:ss')"
+        $passwordLastSet.Content = "$(Get-Date $user.PasswordLastSet -Format $Global:DateFormat)"
         $passwordLastSet.ToolTip = "$([int](New-TimeSpan -Start $user.PasswordLastSet).TotalDays) day(s) ago"
     } else {
         $passwordLastSet.Content = $null
@@ -39,7 +39,7 @@ function Update-UI {
     }
 
     if ($user.lastBadPasswordAttempt) {
-        $lastBadPasswordAttempt.Content = "$(Get-Date $user.lastBadPasswordAttempt -Format 'yyyy-MM-dd HH:mm:ss')"
+        $lastBadPasswordAttempt.Content = "$(Get-Date $user.lastBadPasswordAttempt -Format $Global:DateFormat)"
         $lastBadPasswordAttempt.ToolTip = "$([int](New-TimeSpan -Start $user.lastBadPasswordAttempt).TotalDays) day(s) ago"
     } else {
         $lastBadPasswordAttempt.Content = $null
@@ -74,83 +74,77 @@ function Update-UI {
 }
 
 function Clear-UI {
-    
-    $global:User = $null
-    $textboxSearch.Text = $null
-    $textboxSearch.ToolTip = $null
-    $checkboxUnlock.IsEnabled = $true
-    $checkboxUnlock.IsChecked = $false
-    $checkboxEnable.IsEnabled = $true
-    $checkboxEnable.IsChecked = $false
-    $checkboxChangePwd.IsChecked = $false
-    $passwordLastSet.Content = $null
-    $passwordLastSet.ToolTip = $null
+    $global:User                    = $null
+    $textboxSearch.Text             = $null
+    $textboxSearch.ToolTip          = $null
+    $checkboxUnlock.IsEnabled       = $true
+    $checkboxUnlock.IsChecked       = $false
+    $checkboxEnable.IsEnabled       = $true
+    $checkboxEnable.IsChecked       = $false
+    $checkboxChangePwd.IsChecked    = $false
+    $passwordLastSet.Content        = $null
+    $passwordLastSet.ToolTip        = $null
     $lastBadPasswordAttempt.Content = $null
     $lastBadPasswordAttempt.ToolTip = $null
-    $slider.Minimum = 10
-    $slider.Maximum = $slider.Minimum + 16
-    $slider.Value   = $slider.Minimum
-    $labelPwdPreview.Content = $null
-    $labelPwdPreview.ToolTip = $null
-    $passwordLifetime.Minimum = 0
-    $passwordLifetime.Maximum = 100
-    $passwordLifetime.Value   = $passwordLifetime.Minimum
-    $passwordLifetime.ToolTip = $null
-    $passwordExpired.Content = $null
-    $passwordNeverExpires.Content = $null
-    $passwordPolicy.Content = $null
-    $passwordPolicy.ToolTip = $null
+    $slider.Minimum                 = 10
+    $slider.Maximum                 = $slider.Minimum + 16
+    $slider.Value                   = $slider.Minimum
+    $labelPwdPreview.Content        = $null
+    $labelPwdPreview.ToolTip        = $null
+    $passwordLifetime.Minimum       = 0
+    $passwordLifetime.Maximum       = 100
+    $passwordLifetime.Value         = $passwordLifetime.Minimum
+    $passwordLifetime.ToolTip       = $null
+    $passwordExpired.Content        = $null
+    $passwordNeverExpires.Content   = $null
+    $passwordPolicy.Content         = $null
+    $passwordPolicy.ToolTip         = $null
+    # $window.Height                = $window.MinHeight
+    # $expander.IsExpanded          = $false
 
-    $window.Height = $window.MinHeight
-    $expander.IsExpanded = $false
-
-    $null = $xamGUI.LayoutTransform
+    # $null = $xamGUI.LayoutTransform
 }
 
-function _SecureRand {
-    param (
-        [string[]]$Chars,
+function Get-RandomCustom {
+    param(
+        [Parameter(Mandatory)][System.Object[]]$InputObject,
         [int]$Count = 1
     )
-    if (Get-Command "Get-SecureRandom" -errorAction SilentlyContinue) { 
-        # PS >= 7.4
-        return $Chars | Get-SecureRandom -Count $Count
-    } else {
-        $res = ""
-        $cryptGen = [System.Security.Cryptography.RandomNumberGenerator]::Create()
-        $memory = [byte[]]@(0) * $Count;
-        $cryptGen.GetBytes($memory)
-        $cryptGen.Dispose()
-        
-        For($i=0;$i -lt $Count;$i++) {
-            $randIndex = [int] ($memory[$i] % $chars.Length);
-            $res += [char]$chars[$randIndex]
+
+    if ($Global:UseSecureRandom.IsPresent) {
+        if (Get-Command 'Get-SecureRandom' -ErrorAction SilentlyContinue) {
+            $InputObject | Get-SecureRandom -Count $count
+        } else {
+            $cryptGen = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+            $memory   = [byte[]]@(0)*$Count
+            $cryptGen.GetBytes($memory)
+            $cryptGen.Dispose()
+            0..($Count-1) | ForEach-Object {
+                $index = [int]($memory[$_]%$InputObject.Length)
+                $InputObject[$index]
+            }
         }
-        return $res
+    } else {
+        Get-Random -InputObject $InputObject -Count $Count
     }
 }
+
 function New-Password {
-    param([int]$Length = 8)
+    param([int]$Length = 10)
 
-    [string]$password = ""
-
-    $low = 'a','b','c','d','e','f','g','h','i','j','k',    'm','n','o','p','q','r','s','t','u','v','w','x','y','z' 
-    $upp = 'A','B','C','D','E','F','G','H',    'J','K','L','M','N',    'P','Q','R','S','T','U','V','W','X','Y','Z'
+    [string]$password = ''
+    $low = 'abcdefghijkmnopqrstuvwxyz'.ToCharArray() 
+    $upp = 'ABCDEFGHJKLMNPQRSTUVWXYZ'.ToCharArray()
+    $spe = '!#$%&*+-./=?@_'.ToCharArray()
     $num = 1..9
-    $spe = '!','#','$','%','&','*','+','-','.','/','=','?','@','_'
-    $all = $low+$upp+$num+$spe
+    $all = $low + $upp + $spe + $num
 
-    'low','upp','num','spe' | ForEach-Object { Invoke-Expression -Command "`$password += _SecureRand -Chars @(`$$_) -Count 1" }
-    while ($password.Length -lt $Length) { $password += _SecureRand -Chars $all -Count 1 }
-    $password = (_SecureRand -Chars $password.ToCharArray() -Count $Length) -join ''
-
-    return $password
+    'low','upp','spe','num' | ForEach-Object { Invoke-Expression -Command "`$password += Get-RandomCustom `$$_" }
+    while ($password.Length -lt $Length) { $password += Get-RandomCustom $all }
+    (Get-RandomCustom $password.ToCharArray() -Count $Length) -join ''
 }
 
 function Hide-Console {
-    Write-Verbose 'Hiding PowerShell console...'
-    # .NET method for hiding the PowerShell console window
-    # https://stackoverflow.com/questions/40617800/opening-powershell-script-and-hide-command-prompt-but-not-the-gui
     Add-Type -Name Window -Namespace Console -MemberDefinition '
     [DllImport("Kernel32.dll")]
     public static extern IntPtr GetConsoleWindow();
@@ -158,5 +152,5 @@ function Hide-Console {
     public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
     '
     $consolePtr = [Console.Window]::GetConsoleWindow()
-    [Console.Window]::ShowWindow($consolePtr, 0) # 0 = hide
+    [Console.Window]::ShowWindow($consolePtr, 0)
 }
