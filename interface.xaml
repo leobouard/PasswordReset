@@ -88,7 +88,7 @@
             </TabControl>
         </Grid>
         <!-- Options and details about password -->
-        <Expander Name="expander" Grid.Row="3" Background="#F2F2F2" Margin="0,15,0,15" BorderBrush="#D5DFE5" BorderThickness="1" Padding="5">
+        <Expander Name="expander" Grid.Row="3" Background="#F2F2F2" Margin="0,15,0,15" BorderBrush="DarkGray" BorderThickness="1" Padding="5">
             <Expander.Header>Show more options and information</Expander.Header>
             <StackPanel>
                 <Label FontSize="13" FontWeight="Bold" Content="Account options"/>

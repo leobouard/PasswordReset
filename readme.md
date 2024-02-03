@@ -27,21 +27,23 @@ For example, if your password policy is set to 12 characters minimum, the minimu
 
 **Reminder**: Authenticated Users do not have access to fine-grained password policies by default. [How to display fine-grained password policy settings to Authenticated Users? - Synergix Support](https://synergixdesk.zendesk.com/hc/en-us/articles/202927708-How-to-display-fine-grained-password-policy-settings-to-Authenticated-Users-).
 
-## About colors
+## Parameters
 
-Colors can be customized using the script parameters:
+### ShowConsole
 
-- `-PrimaryColor` will be used for the main buttons (search, cancel and reset) and the progress bar to show password lifetime.
-- `-SecondaryColor` will be used for the clear button and borders.
-- `-DarkColor` will be used for the baner and the password buttons (regen and copy to clipboard).
-- `-AccentBGColor` will be used for the background of the password box and expander.
+Invoke this parameter to prevent the script from hidding the console.
 
-Parameter | Default value | Text color
---------- | ------------- | ----------
-PrimaryColor | | White
-SecondaryColor | #D5DFE5 | None
-DarkColor | #2D3142 | White
-AccentBGColor | #F2F2F2 | Black
+### UseSecureRandom
+
+Invoke this parameter to use a more secure way to get random items (using `Get-SecureRandom` or an equivalent). This method is slower than the standard method using `Get-Random`.
+
+### DateFormat
+
+Modify the date format of the properties "Password last set" and "Last bad password attempt". You can use a .NET format specifier. Learn more about date and time format here: <https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?view=netframework-4.8>.
+
+### PrimaryColor
+
+Color that will be used for the main buttons (search, cancel and reset) and the progress bar to show password lifetime.
 
 ## Other mentions
 
