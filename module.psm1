@@ -99,10 +99,13 @@ function Clear-UI {
     $passwordNeverExpires.Content   = $null
     $passwordPolicy.Content         = $null
     $passwordPolicy.ToolTip         = $null
-    # $window.Height                = $window.MinHeight
-    # $expander.IsExpanded          = $false
 
-    # $null = $xamGUI.LayoutTransform
+    $passwordBox.Password           = $null
+    $textboxPassword.Text           = $null
+    $labelComplexity.Foreground     = 'DarkGray'
+    $labelComplexity.Content        = $null
+    $labelMinLength.Foreground      = 'DarkGray'
+    $labelMinLength.Content         = $null
 }
 
 function Get-RandomCustom {
@@ -142,6 +145,47 @@ function New-Password {
     'low','upp','spe','num' | ForEach-Object { Invoke-Expression -Command "`$password += Get-RandomCustom `$$_" }
     while ($password.Length -lt $Length) { $password += Get-RandomCustom $all }
     (Get-RandomCustom $password.ToCharArray() -Count $Length) -join ''
+}
+
+function Test-Complexity {
+    param(
+        [string]$String,
+        [switch]$Detail
+    ) 
+
+    $test = [PSCustomObject]@{
+        Lowercase = $String -cmatch '[a-z]'
+        Uppercase = $String -cmatch '[A-Z]'
+        Special   = $String -match '[\W_]'
+        Number    = $String -match '[\d]'
+    }
+
+    if ($Detail.IsPresent) {
+        $test
+    } else {
+        ($test.Lowercase + $test.Uppercase + $test.Special + $test.Number) -ge 3
+    }    
+}
+
+function Update-PasswordCompliance {
+    param([string]$String)
+
+    $complexity = Test-Complexity -String $String
+    if ($complexity -eq $true) {
+        $labelComplexity.Foreground = 'DarkGreen'
+        $labelComplexity.Content    = '✔ Complexity ok'
+    } else {
+        $labelComplexity.Foreground = 'DarkRed'
+        $labelComplexity.Content    = '✘ Not complex enough'
+    }
+
+    if ($String.Length -ge $slider.Minimum) {
+        $labelMinLength.Foreground = 'DarkGreen'
+        $labelMinLength.Content    = '✔ Length ok'
+    } else {
+        $labelMinLength.Foreground = 'DarkRed'
+        $labelMinLength.Content    = '✘ Not long enough'
+    }
 }
 
 function Hide-Console {
