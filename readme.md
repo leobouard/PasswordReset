@@ -29,19 +29,20 @@ For example, if your password policy is set to 12 characters minimum, the minimu
 
 ## Parameters
 
-### ShowConsole
+### -ShowConsole
 
 Invoke this parameter to prevent the script from hidding the console.
 
-### UseSecureRandom
+### -UseSecureRandom
 
 Invoke this parameter to use a more secure way to get random items (using `Get-SecureRandom` or an equivalent). This method is slower than the standard method using `Get-Random`.
 
-### DateFormat
+### -DateFormat
 
-Modify the date format of the properties "Password last set" and "Last bad password attempt". You can use a .NET format specifier. Learn more about date and time format here: <https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?view=netframework-4.8>.
+Modify the date format of the properties "Password last set" and "Last bad password attempt". You can use a .NET format specifier. Learn more here: [Custom date and time format strings
+ \| Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings?view=netframework-4.8).
 
-### PrimaryColor
+### -PrimaryColor
 
 Color that will be used for the main buttons (search, cancel and reset) and the progress bar to show password lifetime.
 
