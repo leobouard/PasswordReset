@@ -142,7 +142,9 @@ function New-Password {
     $num = 1..9
     $all = $low + $upp + $spe + $num
 
-    'low','upp','spe','num' | ForEach-Object { Invoke-Expression -Command "`$password += Get-RandomCustom `$$_" }
+    'low','upp','spe','num' | ForEach-Object {
+        Set-Variable $_ -Value (Get-RandomCustom (Get-Variable $_).Value)
+    }
     while ($password.Length -lt $Length) { $password += Get-RandomCustom $all }
     (Get-RandomCustom $password.ToCharArray() -Count $Length) -join ''
 }
