@@ -27,6 +27,16 @@ function Update-UI {
     $checkboxEnable.IsChecked = $false
     $checkboxChangePwd.IsChecked = $false
 
+    $passwordBox.Password       = $null
+    $textboxPassword.Text       = $null
+    $textboxPassword.Visibility = 'Hidden'
+    $labelComplexity.Foreground = 'DarkGray'
+    $labelComplexity.Content    = $null
+    $labelMinLength.Foreground  = 'DarkGray'
+    $labelMinLength.Content     = $null
+    $buttonShowPwd.Visibility   = 'Visible'
+    $buttonHidePwd.Visibility   = 'Hidden' 
+
     $userPasswordPolicy = Get-ADUserResultantPasswordPolicy -Identity $user
     if (!$userPasswordPolicy) { $userPasswordPolicy = Get-ADDefaultDomainPasswordPolicy }
 
