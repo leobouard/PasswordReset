@@ -75,10 +75,9 @@ $buttonReset.Add_Click({
         if ($null -eq $errorMessage) {
             [void][System.Windows.MessageBox]::Show("The new password has been copied to your clipboard: $password", "Password reset", 1, 64)
             $password | Set-Clipboard
+            $Global:User = Get-ADUser $Global:User -Properties *
+            Update-UI
         }
-
-        $Global:User = Get-ADUser $Global:User -Properties *
-        Update-UI
     }
 })
 
