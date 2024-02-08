@@ -30,9 +30,7 @@ function Update-UI {
     $passwordBox.Password       = $null
     $textboxPassword.Text       = $null
     $textboxPassword.Visibility = 'Hidden'
-    $labelComplexity.Foreground = 'DarkGray'
     $labelComplexity.Content    = $null
-    $labelMinLength.Foreground  = 'DarkGray'
     $labelMinLength.Content     = $null
     $buttonShowPwd.Visibility   = 'Visible'
     $buttonHidePwd.Visibility   = 'Hidden' 
@@ -113,9 +111,7 @@ function Clear-UI {
     $passwordBox.Password           = $null
     $textboxPassword.Text           = $null
     $textboxPassword.Visibility     = 'Hidden'
-    $labelComplexity.Foreground     = 'DarkGray'
     $labelComplexity.Content        = $null
-    $labelMinLength.Foreground      = 'DarkGray'
     $labelMinLength.Content         = $null
     $buttonShowPwd.Visibility       = 'Visible'
     $buttonHidePwd.Visibility       = 'Hidden' 
