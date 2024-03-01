@@ -13,55 +13,59 @@ $Global:UseSecureRandom = $UseSecureRandom
 $Global:DateFormat = $DateFormat
 
 try { 
-    Add-Type -AssemblyName PresentationCore,PresentationFramework,WindowsBase
-} catch { 
+    Add-Type -AssemblyName PresentationCore, PresentationFramework, WindowsBase
+}
+catch { 
     Write-Error "Failed to load Windows Presentation Framework assemblies"
 }
 
-[xml]$Global:xmlWPF = (Get-Content -Path "$PSScriptRoot\interface.xaml") -creplace 'DodgerBlue',$PrimaryColor
+[xml]$Global:xmlWPF = (Get-Content -Path "$PSScriptRoot\interface.xaml") -creplace 'DodgerBlue', $PrimaryColor
 $Global:xamGUI = [Windows.Markup.XamlReader]::Load((New-Object System.Xml.XmlNodeReader $xmlWPF))
 $xmlWPF.SelectNodes("//*[@Name]") | ForEach-Object { Set-Variable -Name ($_.Name) -Value $xamGUI.FindName($_.Name) -Scope Global }
 
-$expander.Add_Collapsed({
+$expander.Add_Collapsed{
     $window.Height = $window.MinHeight
-})
+}
 
-$expander.Add_Expanded({
+$expander.Add_Expanded{
     $window.Height = $window.MaxHeight
-})
+}
 
-$buttonSearch.Add_Click({
+$buttonSearch.Add_Click{
     Search-User -SearchString $textboxSearch.Text
     if ($Global:User) { Update-UI }
-})
+}
 
-$textboxSearch.Add_KeyDown({
+$textboxSearch.Add_KeyDown{
     if ($_.Key -eq "Return") {
         Search-User -SearchString $textboxSearch.Text
         if ($Global:User) { Update-UI }
     }
-})
+}
 
-$comboboxSearch.Add_DropDownClosed({
+$comboboxSearch.Add_DropDownClosed{
     $comboboxSearch.IsEnabled = $false
-    try { $Global:User = Get-ADUser -Filter {UserPrincipalName -eq $comboboxSearch.Text} -Properties * } catch { $Global:User = $null }
+    try { $Global:User = Get-ADUser -Filter { UserPrincipalName -eq $comboboxSearch.Text } -Properties * } catch { $Global:User = $null }
     if ($Global:User) { Update-UI }
-})
+}
 
-$buttonReset.Add_Click({
+$buttonReset.Add_Click{
     if ($Global:User) {
 
         if ($tabitemAuto.IsSelected) {
             $password = $labelPwdPreview.Content
-        } elseif ($textboxPassword.Visibility -eq 'Visible') {
+        }
+        elseif ($textboxPassword.Visibility -eq 'Visible') {
             $password = $textboxPassword.Text
-        } else {
+        }
+        else {
             $password = $passwordBox.Password
         }
         
         try {
             Set-ADAccountPassword $Global:User -Reset -NewPassword (ConvertTo-SecureString -AsPlainText $password -Force)
-        } catch {
+        }
+        catch {
             $errorMessage = $_.Exception.Message
             [void][System.Windows.MessageBox]::Show($errorMessage, "Can't change the password", 1, 16)
         }
@@ -77,59 +81,59 @@ $buttonReset.Add_Click({
             Update-UI
         }
     }
-})
+}
 
-$slider.Add_ValueChanged({
+$slider.Add_ValueChanged{
     $labelPwdPreview.Content = New-Password -Length $slider.Value
     $labelPwdPreview.ToolTip = $labelPwdPreview.Content
-})
+}
 
-$buttonRegen.Add_Click({
+$buttonRegen.Add_Click{
     $labelPwdPreview.Content = New-Password -Length $slider.Value
     $labelPwdPreview.ToolTip = $labelPwdPreview.Content
-})
+}
 
-$buttonClipboard.Add_Click({
+$buttonClipboard.Add_Click{
     $labelPwdPreview.Content | Set-Clipboard
-})
+}
 
-$buttonClear.Add_Click({
+$buttonClear.Add_Click{
     Clear-UI
-})
+}
 
-$buttonCancel.Add_Click({
+$buttonCancel.Add_Click{
     $xamGUI.Close()
     break
-})
+}
 
-$passwordBox.Add_KeyUp({
+$passwordBox.Add_KeyUp{
     Update-PasswordCompliance -String $passwordBox.Password
-})
+}
 
-$textboxPassword.Add_KeyUp({
+$textboxPassword.Add_KeyUp{
     Update-PasswordCompliance -String $textboxPassword.Text
-})
+}
 
-$passwordBox.Add_KeyUp({
+$passwordBox.Add_KeyUp{
     if ($passwordBox.Password -eq '') {
         $labelComplexity.Content = $null
-        $labelMinLength.Content  = $null
+        $labelMinLength.Content = $null
     }
-})
+}
 
-$buttonShowPwd.Add_Click({
-    $textboxPassword.Text       = $passwordBox.Password
+$buttonShowPwd.Add_Click{
+    $textboxPassword.Text = $passwordBox.Password
     $textboxPassword.Visibility = 'Visible'
-    $buttonHidePwd.Visibility   = 'Visible'
-    $buttonShowPwd.Visibility   = 'Hidden'
-})
+    $buttonHidePwd.Visibility = 'Visible'
+    $buttonShowPwd.Visibility = 'Hidden'
+}
 
-$buttonHidePwd.Add_Click({
-    $passwordBox.Password       = $textboxPassword.Text
+$buttonHidePwd.Add_Click{
+    $passwordBox.Password = $textboxPassword.Text
     $textboxPassword.Visibility = 'Hidden'
-    $buttonHidePwd.Visibility   = 'Hidden'
-    $buttonShowPwd.Visibility   = 'Visible'
-})
+    $buttonHidePwd.Visibility = 'Hidden'
+    $buttonShowPwd.Visibility = 'Visible'
+}
 
 if (!$ShowConsole.IsPresent) { $null = Hide-Console }
 
