@@ -134,4 +134,5 @@ $buttonHidePwd.Add_Click({
 })
 
 if (!$ShowConsole.IsPresent) { $null = Hide-Console }
-$null = $xamGUI.ShowDialog()
+
+($xamGUI.Dispatcher.InvokeAsync{ $xamGUI.ShowDialog() }).Wait()
