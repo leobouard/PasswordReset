@@ -58,8 +58,6 @@ $buttonReset.Add_Click({
         } else {
             $password = $passwordBox.Password
         }
-
-        Write-Host $password -ForegroundColor Yellow
         
         try {
             Set-ADAccountPassword $Global:User -Reset -NewPassword (ConvertTo-SecureString -AsPlainText $password -Force)
