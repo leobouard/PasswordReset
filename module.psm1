@@ -105,10 +105,9 @@ function Clear-UI {
     $passwordBox.Password = $null
     $textboxPassword.Text = $null
     $textboxPassword.Visibility = 'Hidden'
-    $labelComplexity.Content = $null
-    $labelMinLength.Content = $null
     $buttonShowPwd.Visibility = 'Visible'
     $buttonHidePwd.Visibility = 'Hidden'
+    Update-PasswordCompliance
 
     # Account options
     $checkboxUnlock.IsEnabled = $true
@@ -186,8 +185,8 @@ function Test-Complexity {
     $test = [PSCustomObject]@{
         Lowercase = $String -cmatch '[a-z]'
         Uppercase = $String -cmatch '[A-Z]'
-        Special   = $String -match '[\W_]'
         Number    = $String -match '[\d]'
+        Special   = $String -match '[\W_]'
     }
 
     if ($Detail.IsPresent) { $test } else { ($test.Lowercase + $test.Uppercase + $test.Special + $test.Number) -ge 3 }    
@@ -196,24 +195,36 @@ function Test-Complexity {
 function Update-PasswordCompliance {
     param([string]$String)
 
-    $complexity = Test-Complexity -String $String
-    # Password complexity
-    if ($complexity -eq $true) {
-        $labelComplexity.Foreground = 'DarkGreen'
-        $labelComplexity.Content = '✔ Complexity ok'
+    $complexity = Test-Complexity -String $String -Detail
+
+    # Lowercase
+    switch ($complexity.Lowercase) {
+        $true  { $labelLowercase.BorderBrush = 'Green' ; $labelLowercase.Foreground = 'DarkGreen' }
+        $false { $labelLowercase.BorderBrush = 'LightGray' ; $labelLowercase.Foreground = 'DarkGray' }
     }
-    else {
-        $labelComplexity.Foreground = 'DarkRed'
-        $labelComplexity.Content = '✘ Not complex enough'
+
+    # Uppercase
+    switch ($complexity.Uppercase) {
+        $true  { $labelUppercase.BorderBrush = 'Green' ; $labelUppercase.Foreground = 'DarkGreen' }
+        $false { $labelUppercase.BorderBrush = 'LightGray' ; $labelUppercase.Foreground = 'DarkGray' }
     }
-    # Password length
-    if ($String.Length -ge $slider.Minimum) {
-        $labelMinLength.Foreground = 'DarkGreen'
-        $labelMinLength.Content = '✔ Length ok'
+
+    # Number
+    switch ($complexity.Number) {
+        $true  { $labelNumber.BorderBrush = 'Green' ; $labelNumber.Foreground = 'DarkGreen' }
+        $false { $labelNumber.BorderBrush = 'LightGray' ; $labelNumber.Foreground = 'DarkGray' }
     }
-    else {
-        $labelMinLength.Foreground = 'DarkRed'
-        $labelMinLength.Content = '✘ Not long enough'
+
+    # Special
+    switch ($complexity.Special) {
+        $true  { $labelSpecial.BorderBrush = 'Green' ; $labelSpecial.Foreground = 'DarkGreen' }
+        $false { $labelSpecial.BorderBrush = 'LightGray' ; $labelSpecial.Foreground = 'DarkGray' }
+    }
+
+    # Length
+    switch ($String.Length -ge $slider.Minimum) {
+        $true  { $labelLength.BorderBrush = 'Green' ; $labelLength.Foreground = 'DarkGreen' }
+        $false { $labelLength.BorderBrush = 'LightGray' ; $labelLength.Foreground = 'DarkGray' }
     }
 }
 
