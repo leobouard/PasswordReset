@@ -18,6 +18,9 @@
 
 function Update-UI {
 
+    # Password policy
+    $userPasswordPolicy = Get-ADUserResultantPasswordPolicy -Identity $user
+
     # Search bar
     $textboxSearch.Text = $Global:User.DisplayName
     $textboxSearch.ToolTip = $Global:User.CanonicalName
@@ -33,11 +36,8 @@ function Update-UI {
     $passwordBox.Password = $null
     $textboxPassword.Text = $null
     $textboxPassword.Visibility = 'Hidden'
-    $labelComplexity.Content = $null
-    $labelMinLength.Content = $null
     $buttonShowPwd.Visibility = 'Visible'
     $buttonHidePwd.Visibility = 'Hidden' 
-    $userPasswordPolicy = Get-ADUserResultantPasswordPolicy -Identity $user
 
     # Account option
     if ($User.LockedOut -eq $false) { $checkboxUnlock.IsEnabled = $false } else { $checkboxUnlock.IsEnabled = $true }
