@@ -20,13 +20,16 @@ function Update-UI {
 
     # Password policy
     $userPasswordPolicy = Get-ADUserResultantPasswordPolicy -Identity $user
+    if (!$userPasswordPolicy) { 
+        $userPasswordPolicy = Get-ADDefaultDomainPasswordPolicy
+    }
 
     # Search bar
     $textboxSearch.Text = $Global:User.DisplayName
     $textboxSearch.ToolTip = $Global:User.CanonicalName
 
     # Auto-generated tab
-    $slider.Minimum = if ($userPasswordPolicy.MinPasswordLength -le 8) { 8 } else { $userPasswordPolicy.MinPasswordLength }
+    $slider.Minimum = if ($userPasswordPolicy.MinPasswordLength -le 10) { 10 } else { $userPasswordPolicy.MinPasswordLength }
     $slider.Maximum = $slider.Minimum + 16
     $slider.Value = $slider.Minimum
     $labelPwdPreview.Content = New-Password -Length $slider.Value
@@ -47,9 +50,6 @@ function Update-UI {
     $checkboxChangePwd.IsChecked = $false
 
     # Password information
-    if (!$userPasswordPolicy) { 
-        $userPasswordPolicy = Get-ADDefaultDomainPasswordPolicy
-    }
     if ($user.PasswordLastSet) {
         $passwordLastSet.Content = "$(Get-Date $user.PasswordLastSet -Format $Global:DateFormat)"
         $passwordLastSet.ToolTip = "$([int](New-TimeSpan -Start $user.PasswordLastSet).TotalDays) day(s) ago"

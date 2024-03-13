@@ -114,13 +114,6 @@ $textboxPassword.Add_KeyUp{
     Update-PasswordCompliance -String $textboxPassword.Text
 }
 
-$passwordBox.Add_KeyUp{
-    if ($passwordBox.Password -eq '') {
-        $labelComplexity.Content = $null
-        $labelMinLength.Content = $null
-    }
-}
-
 $buttonShowPwd.Add_Click{
     $textboxPassword.Text = $passwordBox.Password
     $textboxPassword.Visibility = 'Visible'
