@@ -2,7 +2,7 @@
 
 A simple WPF interface for Active Directory user password reset.
 
-![A preview of the UI](image.png)
+![Auto-generated password](image.png) ![Manual entry password](image2.png)
 
 This script requires the Active Directory module.
 
