@@ -196,6 +196,14 @@ function Update-PasswordCompliance {
     param([string]$String)
 
     $complexity = Test-Complexity -String $String -Detail
+    $pwdCompliance = ($String.Length -ge $slider.Minimum) -and ((Test-Complexity -String $String) -eq $true)
+
+    # Password compliance
+    if ($pwdCompliance -eq $true) {
+        $borderCompliance.BorderBrush = 'Green'
+    } else {
+        $borderCompliance.BorderBrush = 'DarkGray'
+    }
 
     # Lowercase
     switch ($complexity.Lowercase) {
