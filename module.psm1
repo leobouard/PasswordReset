@@ -202,7 +202,7 @@ function Update-PasswordCompliance {
     if ($pwdCompliance -eq $true) {
         $borderCompliance.BorderBrush = 'Green'
     } else {
-        $borderCompliance.BorderBrush = 'DarkGray'
+        $borderCompliance.BorderBrush = 'Transparent'
     }
 
     # Lowercase
