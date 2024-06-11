@@ -32,8 +32,7 @@ function Update-UI {
     $slider.Minimum = if ($userPasswordPolicy.MinPasswordLength -le 10) { 10 } else { $userPasswordPolicy.MinPasswordLength }
     $slider.Maximum = $slider.Minimum + 16
     $slider.Value = $slider.Minimum
-    $labelPwdPreview.Content = New-Password -Length $slider.Value
-    $labelPwdPreview.ToolTip = $labelPwdPreview.Content
+    $textboxPwdPreview.Text = New-Password -Length $slider.Value
 
     # Manual tab
     $passwordBox.Password = $null
@@ -98,8 +97,7 @@ function Clear-UI {
     $slider.Minimum = 10
     $slider.Maximum = $slider.Minimum + 16
     $slider.Value = $slider.Minimum
-    $labelPwdPreview.Content = $null
-    $labelPwdPreview.ToolTip = $null
+    $textboxPwdPreview.Text = $null
 
     # Manual entry
     $passwordBox.Password = $null

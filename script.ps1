@@ -53,7 +53,7 @@ $buttonReset.Add_Click{
     if ($Global:User) {
 
         if ($tabitemAuto.IsSelected) {
-            $password = $labelPwdPreview.Content
+            $password = $textboxPwdPreview.Text
         }
         elseif ($textboxPassword.Visibility -eq 'Visible') {
             $password = $textboxPassword.Text
@@ -84,17 +84,15 @@ $buttonReset.Add_Click{
 }
 
 $slider.Add_ValueChanged{
-    $labelPwdPreview.Content = New-Password -Length $slider.Value
-    $labelPwdPreview.ToolTip = $labelPwdPreview.Content
+    $textboxPwdPreview.Text = New-Password -Length $slider.Value
 }
 
 $buttonRegen.Add_Click{
-    $labelPwdPreview.Content = New-Password -Length $slider.Value
-    $labelPwdPreview.ToolTip = $labelPwdPreview.Content
+    $textboxPwdPreview.Text = New-Password -Length $slider.Value
 }
 
 $buttonClipboard.Add_Click{
-    $labelPwdPreview.Content | Set-Clipboard
+    $textboxPwdPreview.Text | Set-Clipboard
 }
 
 $buttonClear.Add_Click{
